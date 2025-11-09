@@ -32,7 +32,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    ' To reset your password, you need your email or\mobile number that can be authenticated',
+                    ' To reset your password, you need your email ormobile number that can be authenticated',
                     style: TextStyle(
                       fontSize: 30,
                       color: const Color.fromARGB(255, 115, 117, 119),
@@ -40,6 +40,8 @@ class _ForgetScreenState extends State<ForgetScreen> {
                     ),
                   ),
                 ),
+                SizedBox(height: 20,),
+                Container()
               ],
             ),
           ),

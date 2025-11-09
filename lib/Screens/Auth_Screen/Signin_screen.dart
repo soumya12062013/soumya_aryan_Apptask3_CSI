@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:internshala/Widget/Buttons.dart';
+import 'package:internshala/Screens/Main_Screens/HomeScreen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -9,10 +11,11 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _emailC = TextEditingController();
-  TextEditingController _passwordC = TextEditingController();
-  TextEditingController _usernameC = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _emailC = TextEditingController();
+  final TextEditingController _passwordC = TextEditingController();
+  final TextEditingController _usernameC = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _obscureText = true;
 
   bool _obscurePassword = true;
@@ -27,11 +30,12 @@ class _SignInScreenState extends State<SignInScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Form(
+                  key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: 20),
-                      Container(
+                      SizedBox(
                         height: 150,
                         width: 150,
                         child: Image.asset(
@@ -122,6 +126,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(
                         width: 360,
                         child: TextFormField(
+                          controller: _emailC,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
@@ -140,6 +145,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(
                         width: 360,
                         child: TextFormField(
+                          controller: _usernameC,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
@@ -216,6 +222,13 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                         ),
+                      ),
+                      Button(
+                        color: Colors.blue,
+                        height: 50,
+                        width: 360,
+                        text: 'Login',
+                        path: HomeScreen(),
                       ),
                     ],
                   ),

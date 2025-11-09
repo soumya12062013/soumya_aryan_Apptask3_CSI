@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Auth_Screen/Login_screen.dart';
+import '../Auth_Screen/Signin_screen.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigateToNext() async {
-    await Future.delayed(const Duration(seconds: 3)); // Duration for splash
+    await Future.delayed(const Duration(seconds: 3)); 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const SignInScreen()),
@@ -29,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: 400,
               width: 400,
               child: Image.asset(

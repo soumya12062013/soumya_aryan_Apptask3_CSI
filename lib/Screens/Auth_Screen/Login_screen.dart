@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'Signin_screen.dart';
+import 'package:internshala/Widget/Buttons.dart';
+import 'package:internshala/Screens/Main_Screens/HomeScreen.dart';
+import 'package:internshala/Screens/Auth_Service/Auth_Service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,10 +12,36 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _emailC = TextEditingController();
-  TextEditingController _passwordC = TextEditingController();
+  final TextEditingController _emailC = TextEditingController();
+  final TextEditingController _passwordC = TextEditingController();
+  bool _isloading = false;
   bool _obscurePassword = true;
+  Future<void> _Login() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isloading = true;
+      });
+      final response = await _authService.login(
+        email: _emailC.text.trim(),
+        password: _passwordC.text.trim(),
+      );
+      setState(() {
+        _isloading = false;
+      });
+      if (response['success']) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else {
+        final snackBar = SnackBar(content: Text(response['message']));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,11 +53,12 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Form(
+                  key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: 20),
-                      Container(
+                      SizedBox(
                         height: 150,
                         width: 150,
                         child: Image.asset(
@@ -119,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         width: 360,
                         child: TextFormField(
+                          controller: _emailC,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
@@ -163,6 +195,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 30),
+                      _isloading
+                          ? CircularProgressIndicator()
+                          : Button(
+                              color: Colors.blue,
+                              text: 'Login',
+                              height: 50,
+                              width: 360,
+                              path: _Login,
+                            ),
                     ],
                   ),
                 ),
