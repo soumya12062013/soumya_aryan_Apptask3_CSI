@@ -63,6 +63,9 @@ flutter:
     - Assets/Images/image.png
     - Assets/Images/logo.jpg
     - Assets/Images/Frame 62.png
+    - Assets/Images/stevejobs.png
+    - Assets/Images/rolepageimg1.png
+    - Assets/Images/rolepageimg2.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
