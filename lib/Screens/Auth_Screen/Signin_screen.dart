@@ -1,24 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:internshala/Widget/Buttons.dart';
 import 'package:internshala/Screens/Main_Screens/HomeScreen.dart';
+import 'package:internshala/Screens/Auth_Service/Auth_Service.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
-
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  String? _selectedRole;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailC = TextEditingController();
   final TextEditingController _passwordC = TextEditingController();
   final TextEditingController _usernameC = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _otpC = TextEditingController();
   bool _obscureText = true;
-
+  bool _isLoading = false;
   bool _obscurePassword = true;
+  final _authService = AuthService();
+  bool _otpSent = false;
+  bool _isSimulatingOTP = false;
+  String? _backendOtp;
+  final _otpController = TextEditingController();
+  Future<void> _register() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      final response1 = await _authService.register(
+        name: _usernameC.text.trim(),
+        email: _emailC.text.trim(),
+        password: _passwordC.text.trim(),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _verification() async {
+    final response2 = await _authService.otpVerification(
+      email: _emailC.text.trim(),
+      otp: _otpC.text.trim(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +170,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 15),
 
                       SizedBox(
                         width: 360,
@@ -159,7 +189,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 15),
                       SizedBox(
                         width: 360,
                         child: TextFormField(
@@ -190,7 +220,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 15),
                       SizedBox(
                         width: 360,
                         child: TextFormField(
@@ -223,12 +253,14 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 15),
+
                       Button(
                         color: Colors.blue,
                         height: 50,
                         width: 360,
-                        text: 'Login',
-                        path: HomeScreen(),
+                        text: 'Send Otp',
+                        path: _register,
                       ),
                     ],
                   ),
