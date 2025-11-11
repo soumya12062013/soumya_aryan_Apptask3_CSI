@@ -22,9 +22,9 @@ class Button extends StatefulWidget {
 class _ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.height,
-      height: widget.width,
+    return SizedBox(
+      width: widget.width,
+      height: widget.height,
 
       child: ElevatedButton(
         onPressed: () async {
@@ -33,7 +33,7 @@ class _ButtonState extends State<Button> {
         style: ElevatedButton.styleFrom(backgroundColor: widget.color),
         child: Text(
           widget.text,
-          style: TextStyle(fontSize: 16, color: Colors.white10),
+          style: TextStyle(fontSize: 16, color: Colors.white),
         ),
       ),
     );

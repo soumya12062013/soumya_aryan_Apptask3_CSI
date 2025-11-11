@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:internshala/Widget/Buttons.dart';
 import 'package:internshala/Screens/Main_Screens/HomeScreen.dart';
 import 'package:internshala/Screens/Auth_Service/Auth_Service.dart';
+import 'package:internshala/Screens/Auth_Screen/Otp_Screen.dart';
+import 'package:internshala/Screens/Auth_Screen/Login_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -10,22 +12,17 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  String? _selectedRole;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailC = TextEditingController();
+  final TextEditingController emailC = TextEditingController();
   final TextEditingController _passwordC = TextEditingController();
   final TextEditingController _usernameC = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _otpC = TextEditingController();
   bool _obscureText = true;
   bool _isLoading = false;
   bool _obscurePassword = true;
   final _authService = AuthService();
-  bool _otpSent = false;
-  bool _isSimulatingOTP = false;
-  String? _backendOtp;
-  final _otpController = TextEditingController();
+
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -33,20 +30,24 @@ class _SignInScreenState extends State<SignInScreen> {
       });
       final response1 = await _authService.register(
         name: _usernameC.text.trim(),
-        email: _emailC.text.trim(),
+        email: emailC.text.trim(),
         password: _passwordC.text.trim(),
       );
       setState(() {
         _isLoading = false;
       });
+      if (response1['success'] == true) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtpScreen(email: emailC.text.trim()),
+          ),
+        );
+      } else {
+        final snackBar = SnackBar(content: Text(response1['message']));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     }
-  }
-
-  Future<void> _verification() async {
-    final response2 = await _authService.otpVerification(
-      email: _emailC.text.trim(),
-      otp: _otpC.text.trim(),
-    );
   }
 
   @override
@@ -156,10 +157,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(
                         width: 360,
                         child: TextFormField(
-                          controller: _emailC,
+                          controller: _usernameC,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
+                              return 'Please enter your username';
                             }
                             return null;
                           },
@@ -175,7 +176,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(
                         width: 360,
                         child: TextFormField(
-                          controller: _usernameC,
+                          controller: emailC,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
@@ -254,7 +255,33 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                       SizedBox(height: 15),
-
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Already have an account? ",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              "Log in",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       Button(
                         color: Colors.blue,
                         height: 50,

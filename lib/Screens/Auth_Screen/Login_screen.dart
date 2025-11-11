@@ -195,14 +195,30 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        width: 360,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       SizedBox(height: 30),
                       _isloading
                           ? CircularProgressIndicator()
                           : Button(
                               color: Colors.blue,
                               text: 'Login',
-                              height: 50,
                               width: 360,
+                              height: 50,
                               path: _Login,
                             ),
                     ],

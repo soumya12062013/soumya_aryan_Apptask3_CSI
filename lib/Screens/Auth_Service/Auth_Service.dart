@@ -5,6 +5,7 @@ import 'dart:convert';
 class AuthService {
   static const String baseUrl =
       "https://job-portal-my15.onrender.com/api/auth/";
+
   Future<Map<String, dynamic>> login({
     required String email,
     required String password,
@@ -15,20 +16,39 @@ class AuthService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
-      final data = json.decode(response.body);
+
+      final body = response.body.trim();
+
+      if (body.isEmpty || (!body.startsWith('{') && !body.startsWith('['))) {
+        return {
+          'success': false,
+          'message': 'Invalid or empty response from server: "$body"',
+        };
+      }
+
+      final data = json.decode(body);
+
       if (response.statusCode == 200) {
-        if (data['token'] == null) {
-          return {'success': false, 'message': 'No token Recieved'};
+        if (data['accessToken'] == null) {
+          return {'success': false, 'message': 'No access token received'};
         }
+
         final pref = await SharedPreferences.getInstance();
-        await pref.setString('token', data['token']);
+        await pref.setString('accessToken', data['accessToken']);
+        await pref.setString('refreshToken', data['refreshToken'] ?? '');
 
         return {'success': true, 'data': data};
       } else {
-        return {'success': false, 'message': data['message'] ?? 'login Failed'};
+        return {
+          'success': false,
+          'message': data['message'] ?? 'Login failed (${response.statusCode})',
+        };
       }
     } catch (e) {
-      return {'success': false, 'message': e.toString()};
+      return {
+        'success': false,
+        'message': 'Login failed. Please try again. Error: $e',
+      };
     }
   }
 
@@ -92,6 +112,27 @@ class AuthService {
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         return data;
+      } else {
+        return {
+          'success': false,
+          'message': data['message'] ?? 'failde to update role',
+        };
+      }
+    } catch (e) {
+      return {'success': false, 'message': 'An unexpected error occurred: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> ResendOtp({required String email}) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/assign-role'),
+        body: json.encode({'email': email}),
+        headers: {'Content-Type': 'application/json'},
+      );
+      final data = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        return {'success': true, 'data': data};
       } else {
         return {
           'success': false,
