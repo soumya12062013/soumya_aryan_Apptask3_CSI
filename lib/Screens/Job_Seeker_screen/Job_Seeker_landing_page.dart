@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class JobGiverLandingPage extends StatelessWidget {
-  const JobGiverLandingPage({super.key});
+class JobSeekerLandingPage extends StatelessWidget {
+  // JobGiverLandingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +13,13 @@ class JobGiverLandingPage extends StatelessWidget {
         title: Row(
           children: [
             Image.asset('Assets/Images/logo.jpg', height: 24),
-            const SizedBox(width: 8),
-            const Text('NextStep',
+             SizedBox(width: 8),
+             Text('NextStep',
                 style: TextStyle(
                     color: Colors.black, fontWeight: FontWeight.bold)),
           ],
         ),
-        actions: const [
+        actions:  [
           Icon(Icons.chat_bubble_outline, color: Colors.black),
           SizedBox(width: 10),
           Icon(Icons.person_outline, color: Colors.black),
@@ -40,7 +40,7 @@ class JobGiverLandingPage extends StatelessWidget {
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children:  [
                       Text(
                         "Find Your Dream Job Today!",
                         textAlign: TextAlign.center,
@@ -63,7 +63,7 @@ class JobGiverLandingPage extends StatelessWidget {
 
           // Search Box
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding:  EdgeInsets.all(16),
             child: Column(
               children: [
                 TextField(
@@ -76,7 +76,7 @@ class JobGiverLandingPage extends StatelessWidget {
                         borderSide: BorderSide.none),
                   ),
                 ),
-                const SizedBox(height: 10),
+                 SizedBox(height: 10),
                 Row(
                   children: [
                     Expanded(
@@ -89,7 +89,7 @@ class JobGiverLandingPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide.none),
                         ),
-                        items: const [
+                        items:  [
                           DropdownMenuItem(
                               value: "India", child: Text("India")),
                           DropdownMenuItem(
@@ -98,7 +98,7 @@ class JobGiverLandingPage extends StatelessWidget {
                         onChanged: (value) {},
                       ),
                     ),
-                    const SizedBox(width: 10),
+                     SizedBox(width: 10),
                     Expanded(
                       child: DropdownButtonFormField<String>(
                         decoration: InputDecoration(
@@ -109,7 +109,7 @@ class JobGiverLandingPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide.none),
                         ),
-                        items: const [
+                        items:  [
                           DropdownMenuItem(
                               value: "Tech", child: Text("Technology")),
                           DropdownMenuItem(
@@ -120,17 +120,17 @@ class JobGiverLandingPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                 SizedBox(height: 10),
                 ElevatedButton.icon(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.indigo,
-                    minimumSize: const Size(double.infinity, 48),
+                    minimumSize:  Size(double.infinity, 48),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
                   ),
-                  icon: const Icon(Icons.search, color: Colors.white),
-                  label: const Text("Search Job",
+                  icon:  Icon(Icons.search, color: Colors.white),
+                  label:  Text("Search Job",
                       style: TextStyle(color: Colors.white, fontSize: 16)),
                 ),
               ],
@@ -138,7 +138,7 @@ class JobGiverLandingPage extends StatelessWidget {
           ),
 
           // Top Companies
-          const Padding(
+           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Text("Top Companies",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -147,8 +147,8 @@ class JobGiverLandingPage extends StatelessWidget {
             height: 160,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: const [
+              padding:  EdgeInsets.symmetric(horizontal: 16),
+              children:  [
                 CompanyCard(name: "Instagram", jobs: 8, logo: Icons.camera_alt),
                 CompanyCard(name: "Tesla", jobs: 10, logo: Icons.electric_car),
                 CompanyCard(name: "McDonald's", jobs: 12, logo: Icons.fastfood),
@@ -158,34 +158,34 @@ class JobGiverLandingPage extends StatelessWidget {
           ),
 
           // Steps Section
-          const Padding(
+           Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
             child: StepsSection(),
           ),
 
           // Featured Jobs
-          const Padding(
+           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text("Featured Jobs",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           ),
-          const SizedBox(height: 10),
-          const JobCard(
+           SizedBox(height: 10),
+           JobCard(
               title: "Senior Product Designer",
               company: "Flipkart",
               location: "Bengaluru",
               type: "Hybrid"),
-          const JobCard(
+           JobCard(
               title: "Software Engineer (Backend)",
               company: "Zomato",
               location: "Gurgaon",
               type: "Remote"),
-          const JobCard(
+           JobCard(
               title: "Data Scientist",
               company: "Microsoft",
               location: "Hyderabad",
               type: "On-site"),
-          const SizedBox(height: 20),
+           SizedBox(height: 20),
         ],
       ),
     );
@@ -197,33 +197,33 @@ class CompanyCard extends StatelessWidget {
   final int jobs;
   final IconData logo;
 
-  const CompanyCard(
+   CompanyCard(
       {super.key, required this.name, required this.jobs, required this.logo});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 140,
-      margin: const EdgeInsets.only(right: 12),
-      padding: const EdgeInsets.all(16),
+      margin:  EdgeInsets.only(right: 12),
+      padding:  EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-              color: Colors.grey.shade300, offset: const Offset(0, 3), blurRadius: 5)
+              color: Colors.grey.shade300, offset:  Offset(0, 3), blurRadius: 5)
         ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(logo, size: 40, color: Colors.indigo),
-          const SizedBox(height: 10),
+           SizedBox(height: 10),
           Text(name,
               style:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-          const SizedBox(height: 5),
-          Text("$jobs open jobs", style: const TextStyle(fontSize: 12)),
+                   TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+           SizedBox(height: 5),
+          Text("$jobs open jobs", style:  TextStyle(fontSize: 12)),
         ],
       ),
     );
@@ -231,7 +231,7 @@ class CompanyCard extends StatelessWidget {
 }
 
 class StepsSection extends StatelessWidget {
-  const StepsSection({super.key});
+   StepsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -244,9 +244,9 @@ class StepsSection extends StatelessWidget {
 
     return Column(
       children: [
-        const Text("Only 4 Steps to get your dream job",
+         Text("Only 4 Steps to get your dream job",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        const SizedBox(height: 10),
+         SizedBox(height: 10),
         Wrap(
           alignment: WrapAlignment.center,
           spacing: 30,
@@ -259,8 +259,8 @@ class StepsSection extends StatelessWidget {
                         backgroundColor: Colors.indigo.shade100,
                         child: Icon(e.$2, color: Colors.indigo),
                       ),
-                      const SizedBox(height: 6),
-                      Text(e.$1, style: const TextStyle(fontSize: 12)),
+                       SizedBox(height: 6),
+                      Text(e.$1, style:  TextStyle(fontSize: 12)),
                     ],
                   ))
               .toList(),
@@ -276,7 +276,7 @@ class JobCard extends StatelessWidget {
   final String location;
   final String type;
 
-  const JobCard({
+   JobCard({
     super.key,
     required this.title,
     required this.company,
@@ -287,14 +287,14 @@ class JobCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.all(14),
+      margin:  EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding:  EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-              color: Colors.grey.shade300, offset: const Offset(0, 3), blurRadius: 5)
+              color: Colors.grey.shade300, offset:  Offset(0, 3), blurRadius: 5)
         ],
       ),
       child: Column(
@@ -302,22 +302,22 @@ class JobCard extends StatelessWidget {
         children: [
           Text(title,
               style:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          const SizedBox(height: 4),
-          Text(company, style: const TextStyle(color: Colors.grey)),
-          const SizedBox(height: 6),
+                   TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+           SizedBox(height: 4),
+          Text(company, style:  TextStyle(color: Colors.grey)),
+           SizedBox(height: 6),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("$location • $type",
-                  style: const TextStyle(fontSize: 13, color: Colors.black54)),
+                  style:  TextStyle(fontSize: 13, color: Colors.black54)),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.indigo,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8))),
-                child: const Text("Apply",
+                child:  Text("Apply",
                     style: TextStyle(color: Colors.white, fontSize: 12)),
               ),
             ],
