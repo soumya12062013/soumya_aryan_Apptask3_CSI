@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:next_steps/Screens/network_screen.dart';
-import 'package:next_steps/Screens/profile_screen.dart';
+//import 'package:next_steps/Screens/profile_screen.dart';
 
 
 void main() {

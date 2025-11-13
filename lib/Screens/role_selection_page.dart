@@ -10,8 +10,8 @@ class RoleSelectionPage extends StatefulWidget {
 }
 
 class _RoleSelectionPageState extends State<RoleSelectionPage> {
-  NetworkTab _currentTab = NetworkTab.suggestions;
-  int _bottomIndex = 2;
+ // NetworkTab _currentTab = NetworkTab.suggestions;
+ // int _bottomIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,6 @@ class _RoleSelectionPageState extends State<RoleSelectionPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header / App Bar
             Container(
               padding:  EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Row(
@@ -123,7 +122,6 @@ class _RoleSelectionPageState extends State<RoleSelectionPage> {
 
              SizedBox(height: 24),
 
-            // Employer Card
             Padding(
               padding:  EdgeInsets.symmetric(horizontal: 20),
               child: Container(
@@ -154,7 +152,9 @@ class _RoleSelectionPageState extends State<RoleSelectionPage> {
                     ),
                      SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.indigo[900],
                         shape: RoundedRectangleBorder(
@@ -202,7 +202,6 @@ class _RoleSelectionPageState extends State<RoleSelectionPage> {
                   ),
                    SizedBox(height: 20),
 
-                  // Links
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
