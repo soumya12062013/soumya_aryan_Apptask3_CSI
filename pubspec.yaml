@@ -33,6 +33,7 @@ dependencies:
   google_fonts: ^6.3.2
   shared_preferences: ^2.5.3
   http: ^1.5.0
+  lucide_icons: ^0.257.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -65,6 +66,8 @@ flutter:
     - Assets/Images/image.png
     - Assets/Images/logo.jpg
     - Assets/Images/Frame 62.png
+    - Assets/Images/rolepageimg2.jpg
+    - Assets/Images/rolepageimg1.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:internshala/Widget/Buttons.dart';
-import 'package:internshala/Screens/Main_Screens/HomeScreen.dart';
-import 'package:internshala/Screens/Auth_Service/Auth_Service.dart';
+import 'package:internshala/Screens/Job_Giver_screen/HomeScreen.dart';
+import 'package:internshala/Screens/Auth_Screen/Auth_Service.dart';
 import 'package:internshala/Screens/Auth_Screen/Otp_Screen.dart';
 import 'package:internshala/Screens/Auth_Screen/Login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -36,7 +37,14 @@ class _SignInScreenState extends State<SignInScreen> {
       setState(() {
         _isLoading = false;
       });
+
+      print(' Registration Response: $response1');
+      print(' Success value: ${response1['success']}');
+
       if (response1['success'] == true) {
+        final pref = await SharedPreferences.getInstance();
+        await pref.setString('userEmail', emailC.text.trim());
+        print(' Moving to OTP screen');
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -44,7 +52,11 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         );
       } else {
-        final snackBar = SnackBar(content: Text(response1['message']));
+        print(' Registration failed: ${response1['message']}');
+        final snackBar = SnackBar(
+          content: Text(response1['message'] ?? 'Registration failed'),
+          backgroundColor: Colors.red,
+        );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }

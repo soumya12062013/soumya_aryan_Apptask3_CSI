@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'Signin_screen.dart';
 import 'package:internshala/Widget/Buttons.dart';
-import 'package:internshala/Screens/Main_Screens/HomeScreen.dart';
-import 'package:internshala/Screens/Auth_Service/Auth_Service.dart';
+import 'package:flutter/material.dart';
+import 'package:internshala/Screens/Auth_Screen/Auth_Service.dart';
+import 'package:internshala/Screens/Job_Giver_screen/HomeScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:internshala/Screens/Auth_Service/Auth_Service.dart';
+import 'package:internshala/Screens/Auth_Screen/Auth_Service.dart';
 import 'package:internshala/Widget/Buttons.dart';
-import 'package:internshala/Screens/Auth_Screen/Login_Screen.dart';
+//import 'package:internshala/Screens/Auth_Screen/Login_Screen.dart';
+import 'package:internshala/Screens/Auth_Screen/Role_Assign.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;
@@ -17,12 +18,17 @@ class _OtpScreenState extends State<OtpScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController otpC = TextEditingController();
   bool _isLoading = false;
+  bool _isResending = false;
 
   Future<void> _verifyOtp() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
+
+      print(' OTP VERIFICATION STARTED');
+      print(' Email: ${widget.email}');
+      print(' OTP: ${otpC.text.trim()}');
 
       final response = await _authService.otpVerification(
         otp: otpC.text.trim(),
@@ -33,26 +39,65 @@ class _OtpScreenState extends State<OtpScreen> {
         _isLoading = false;
       });
 
+      print(' Response: $response');
+
       if (response['success']) {
+        print(' OTP Verified Successfully');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('OTP Verified Successfully! Please log in.'),
+            content: Text('OTP Verified Successfully! '),
             backgroundColor: Colors.green,
           ),
         );
 
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+          MaterialPageRoute(builder: (context) => RoleSelectionPage()),
           (route) => false,
         );
       } else {
+        print(' OTP Verification Failed: ${response['message']}');
         final snackBar = SnackBar(
-          content: Text(response['message']),
+          content: Text(response['message'] ?? 'Verification failed'),
           backgroundColor: Colors.red,
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+    }
+  }
+
+  Future<void> _resendOtp() async {
+    setState(() {
+      _isResending = true;
+    });
+
+    print(' RESEND OTP STARTED');
+    print(' Email: ${widget.email}');
+
+    final response = await _authService.ResendOtp(email: widget.email);
+
+    setState(() {
+      _isResending = false;
+    });
+
+    print(' Resend Response: $response');
+
+    if (response['success']) {
+      print(' OTP Resent Successfully');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('OTP has been resent to your email!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      print(' Resend Failed: ${response['message']}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response['message'] ?? 'Failed to resend OTP'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -128,7 +173,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         decoration: InputDecoration(
                           counterText: "",
                           labelText: 'OTP',
-                          //hintText: '------',
+
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -149,20 +194,22 @@ class _OtpScreenState extends State<OtpScreen> {
                             color: Colors.blue,
                             text: 'Verify OTP',
                             width: 360,
-                            height: 10,
+                            height: 50,
                             path: _verifyOtp,
                           ),
                     SizedBox(height: 20),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Didn't receive code? Resend OTP",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+                    _isResending
+                        ? CircularProgressIndicator()
+                        : TextButton(
+                            onPressed: _resendOtp,
+                            child: Text(
+                              "Didn't receive code? Resend OTP",
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
                   ],
                 ),
               ),
