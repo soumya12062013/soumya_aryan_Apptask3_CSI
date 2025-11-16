@@ -156,7 +156,8 @@ class AuthService {
       } else {
         print(' OTP Verification failed');
         String errorMessage =
-            data['message'] ?? data['error'] ??
+            data['message'] ??
+            data['error'] ??
             'Verification failed (${response.statusCode})';
         return {'success': false, 'message': errorMessage};
       }
@@ -265,15 +266,14 @@ class AuthService {
       return {'success': false, 'message': 'An unexpected error occurred: $e'};
     }
   }
-  Future <Map<String,dynamic>> ForgotPassword({required String email})async{
-    try{
-      var response = 
+  // Future <Map<String,dynamic>> ForgotPassword({required String email})async{
+  //   try{
+  //     var response =
 
-    }
-    catch(e){
+  //   }
+  //   catch(e){
 
-    }
+  //   }
 
-
-  }
+  // }
 }

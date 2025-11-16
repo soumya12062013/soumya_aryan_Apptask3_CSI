@@ -2,29 +2,32 @@ import 'package:flutter/material.dart';
 
 class Cards extends StatelessWidget {
   final String image;
-  final String Company;
-  final String Shift;
-  final String Salary;
-  final String JobRole;
-  final String Site;
+  final String company;
+  final String shift;
+  final String salary;
+  final String jobRole;
+  final String site;
 
   const Cards({
-    super.key,
+    // super.key,
     required this.image,
-    required this.Company,
-    required this.JobRole,
-    required this.Salary,
-    required this.Shift,
-    required this.Site,
+    required this.company,
+    required this.jobRole,
+    required this.salary,
+    required this.shift,
+    required this.site,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      //color: const Color.fromARGB(255, 201, 219, 234),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
+        border: Border.all(color: Color.fromARGB(255, 147, 191, 227), width: 2),
+
         borderRadius: BorderRadius.circular(16),
-        color: Colors.white,
+        color: const Color.fromARGB(255, 237, 242, 245),
         boxShadow: [
           BoxShadow(
             blurRadius: 6,
@@ -52,7 +55,7 @@ class Cards extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    Company,
+                    company,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -61,7 +64,7 @@ class Cards extends StatelessWidget {
                 ],
               ),
               Text(
-                Shift,
+                shift,
                 style: const TextStyle(fontSize: 14, color: Colors.grey),
               ),
             ],
@@ -70,14 +73,14 @@ class Cards extends StatelessWidget {
           const SizedBox(height: 16),
 
           Text(
-            JobRole,
+            jobRole,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 8),
 
           Text(
-            Salary,
+            salary,
             style: const TextStyle(fontSize: 15, color: Colors.grey),
           ),
 
@@ -95,7 +98,7 @@ class Cards extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  Site,
+                  site,
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.blue,

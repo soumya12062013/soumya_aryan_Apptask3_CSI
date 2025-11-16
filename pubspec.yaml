@@ -68,6 +68,9 @@ flutter:
     - Assets/Images/Frame 62.png
     - Assets/Images/rolepageimg2.jpg
     - Assets/Images/rolepageimg1.jpg
+    - Assets/Images/apple.jpeg
+    - Assets/Images/meta.png
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
