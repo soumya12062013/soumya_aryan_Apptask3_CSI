@@ -11,14 +11,13 @@ class Job extends StatefulWidget {
 }
 
 class _JobState extends State<Job> {
-  int currentIndex = 1; // Jobs tab is selected
+  int currentIndex = 1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      // ✅ INTEGRATED BOTTOM NAVIGATION
       bottomNavigationBar: BottomNavigation(
         currentIndex: currentIndex,
         onTabSelected: (index) {
@@ -68,7 +67,6 @@ class _JobState extends State<Job> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 15),
 
                   Cards(
@@ -193,14 +191,12 @@ class _JobState extends State<Job> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 🎯 Title
                 const Text(
                   "Search by Job Title",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 8),
 
-                // 🔍 Search Field
                 TextField(
                   decoration: InputDecoration(
                     hintText: "Job title or company",
@@ -214,7 +210,6 @@ class _JobState extends State<Job> {
 
                 const SizedBox(height: 20),
 
-                // 📍 LOCATION
                 const Text(
                   "Location",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -243,7 +238,6 @@ class _JobState extends State<Job> {
 
                 const SizedBox(height: 25),
 
-                // 📚 CATEGORY
                 const Text(
                   "Category",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -272,8 +266,6 @@ class _JobState extends State<Job> {
                 ),
 
                 const SizedBox(height: 25),
-
-                // 🕒 JOB TYPE
                 const Text(
                   "Job Type",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -288,7 +280,6 @@ class _JobState extends State<Job> {
 
                 const SizedBox(height: 25),
 
-                // ⭐ EXPERIENCE LEVEL
                 const Text(
                   "Experience Level",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -302,7 +293,6 @@ class _JobState extends State<Job> {
 
                 const SizedBox(height: 25),
 
-                // 🗓 DATE POSTED
                 const Text(
                   "Date Posted",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -317,7 +307,6 @@ class _JobState extends State<Job> {
 
                 const SizedBox(height: 25),
 
-                // 💸 SALARY
                 const Text(
                   "Salary",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -338,7 +327,6 @@ class _JobState extends State<Job> {
 
                 const SizedBox(height: 25),
 
-                // 🏷 TAGS
                 const Text(
                   "Tags",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -368,8 +356,6 @@ class _JobState extends State<Job> {
     );
   }
 
-  // --------------- JOB ITEM ---------------
-
   Widget _jobItem(String title) {
     return Container(
       width: double.infinity,
@@ -392,8 +378,6 @@ class _JobState extends State<Job> {
       ),
     );
   }
-
-  // --------------- CATEGORY CARD ---------------
 
   Widget categoryCard(String title, IconData icon) {
     return Card(
