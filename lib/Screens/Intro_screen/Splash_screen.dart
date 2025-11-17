@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+import 'package:next_steps/Screens/Auth_Screen/Signin_screen.dart';
+//import 'package:internshala/Screens/Auth_Screen/Signin_screen.dart';
+//import 'Auth_Screen/Login_screen.dart';
+
+class SplashScreen extends StatefulWidget {
+  SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToNext();
+  }
+
+  _navigateToNext() async {
+    await Future.delayed(const Duration(seconds: 3)); // Duration for splash
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignUpScreen()),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 400,
+              width: 400,
+              child: Image.asset(
+                'Assets/Images/Frame 62.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

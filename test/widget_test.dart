@@ -7,13 +7,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:next_steps/Screens/network_screen.dart';
+//import 'package:next_steps/Screens/profile_screen.dart';
 
-import 'package:next_steps/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget( MyNetworkScreen());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
