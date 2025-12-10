@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:internshala/Screens/Job_Seeker_screen/taking_page.dart';
+
+import 'package:internshala/Widget/bottom_nav_seeker.dart';
+
+import 'package:internshala/Screens/Job_Seeker_screen/JobSeeker_Profile.dart';
+import 'package:internshala/Screens/Job_Seeker_screen/job_list_page.dart';
+import 'package:internshala/Screens/Job_Seeker_screen/HomeScreen.dart';
 
 class MessagesScreen extends StatelessWidget {
   MessagesScreen({super.key});
@@ -260,49 +265,37 @@ class MessagesScreen extends StatelessWidget {
                     ),
                   );
                 },
-
-                // /// BOTTOM NAVIGATION WITH CENTER BUTTON
-                // bottomNavigationBar: Stack(
-                //   alignment: Alignment.center,
-                //   children: [
-                //     Container(
-                //       height: 80,
-                //       decoration:  BoxDecoration(
-                //           color: Colors.white,
-                //           borderRadius: BorderRadius.only(
-                //               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-                //           boxShadow: [
-                //             BoxShadow(
-                //                 color: Colors.black12, blurRadius: 10, offset: Offset(0, -2))
-                //           ]),
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //         children:  [
-                //           Icon(Icons.home_outlined, size: 28),
-                //           Icon(Icons.receipt_long_outlined, size: 28),
-                //           SizedBox(width: 60),
-                //           Icon(Icons.person_outline, size: 28),
-                //           Icon(Icons.settings_outlined, size: 28),
-                //         ],
-                //       ),
-                //     ),
-
-                //     /// Center button
-                //     Positioned(
-                //       bottom: 25,
-                //       child: Container(
-                //         height: 60,
-                //         width: 60,
-                //         decoration:  BoxDecoration(
-                //             color: Color(0xff0A2A5A), shape: BoxShape.circle),
-                //         child:  Icon(Icons.add, size: 32, color: Colors.white),
-                //       ),
-                //     )
-                //   ],
-                // ),
               ),
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: JobSeekerBottomNavigation(
+          currentIndex: 2,
+          onTabSelected: (index) {
+            if (index == 0) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const Jobs()),
+                (route) => false,
+              );
+            } else if (index == 1) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const JobListPage()),
+                (route) => false,
+              );
+            } else if (index == 2) {
+              // Already on Messages page
+            } else if (index == 3) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const SeekerBioScreen()),
+                (route) => false,
+              );
+            }
+          },
         ),
       ),
     );

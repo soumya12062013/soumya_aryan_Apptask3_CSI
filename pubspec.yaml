@@ -35,7 +35,10 @@ dependencies:
   http: ^1.5.0
   lucide_icons: ^0.257.0
   intl: ^0.20.2
-  img_picker: ^1.0.2
+  image_picker_android: 0.8.13+7
+  
+
+ 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -72,6 +75,8 @@ flutter:
     - Assets/Images/rolepageimg1.jpg
     - Assets/Images/apple.jpeg
     - Assets/Images/meta.png
+    - Assets/Images/apple.jpeg
+    - Assets/Images/stevejobs.jpg
 
   #   - images/a_dot_ham.jpeg
 

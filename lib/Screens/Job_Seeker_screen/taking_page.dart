@@ -1,8 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:internshala/Screens/Job_Seeker_screen/Job_Seeker_Chat_page.dart';
 
-class ChatScreen extends StatelessWidget {
-  const ChatScreen({super.key});
+class ChatScreen extends StatefulWidget {
+  final String? name;
+  final String? avatar;
+
+  const ChatScreen({super.key, this.name, this.avatar});
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  late TextEditingController _messageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _messageController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +37,6 @@ class ChatScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               children: [
-                // Back Button (FUNCTIONAL)
                 GestureDetector(
                   onTap: () {
                     // Navigator.pop(context);
@@ -36,16 +57,21 @@ class ChatScreen extends StatelessWidget {
                 // Profile + Name
                 CircleAvatar(
                   radius: 22,
-                  backgroundImage: AssetImage("Assets/Images/stevejobs.png"),
+                  backgroundImage: widget.avatar != null
+                      ? NetworkImage(widget.avatar!)
+                      : const AssetImage("Assets/Images/stevejobs.png")
+                            as ImageProvider,
                 ),
 
                 const SizedBox(width: 10),
+                SizedBox(height: 15),
 
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Siya Sharma",
+                      widget.name ?? "User",
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
@@ -62,7 +88,6 @@ class ChatScreen extends StatelessWidget {
 
                 Spacer(),
 
-                // Call + Video Icons
                 Icon(Icons.call_outlined),
                 const SizedBox(width: 10),
                 Icon(Icons.videocam_outlined),
@@ -136,9 +161,13 @@ class ChatScreen extends StatelessWidget {
           buildMessageInput(),
         ],
       ),
+    );
+  }
 
-      bottomNavigationBar: Container(
-        height: 70,
+  Widget buildMessageInput() {
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -150,76 +179,52 @@ class ChatScreen extends StatelessWidget {
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(Icons.home_filled, size: 30, color: Colors.black54),
-            Icon(Icons.chat_bubble_rounded, size: 30, color: Colors.black54),
-            Container(
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: Colors.blue.shade600,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.add, color: Colors.white, size: 28),
-            ),
-            Icon(Icons.notifications_none, size: 30, color: Colors.black54),
-            Icon(Icons.person_outline, size: 30, color: Colors.black54),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildMessageInput() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              height: 48,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.emoji_emotions_outlined, color: Colors.grey),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Write your message...",
-                        hintStyle: TextStyle(color: Colors.grey),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.emoji_emotions_outlined, color: Colors.grey),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        controller: _messageController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Write your message...",
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.blue.shade600,
-              shape: BoxShape.circle,
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: () {
+                if (_messageController.text.isNotEmpty) {
+                  print('Message sent: ${_messageController.text}');
+                  _messageController.clear();
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade600,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.send, color: Colors.white, size: 22),
+              ),
             ),
-            child: const Icon(Icons.send, color: Colors.white, size: 22),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

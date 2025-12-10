@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:internshala/Screens/Job_Seeker_screen/taking_page.dart';
+import 'package:internshala/Widget/BottomNavBar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:internshala/Screens/Job_Giver_screen/Job_Giver_about_page.dart';
+
+import 'package:internshala/Screens/Job_Giver_screen/Job_Giver_profile_page.dart';
+import 'package:internshala/Screens/Job_Giver_screen/Job_posting_screen.dart';
 
 class JobGiverChatPage extends StatelessWidget {
   JobGiverChatPage({super.key});
@@ -83,7 +88,6 @@ class JobGiverChatPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      /// TOP APP BAR
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(120),
         child: Container(
@@ -100,10 +104,6 @@ class JobGiverChatPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Image.network(
-                  //   "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/NeuraLogo.png/120px-NeuraLogo.png",
-                  //   height: 35,
-                  // ),
                   Container(
                     width: 200,
                     height: 35,
@@ -188,12 +188,7 @@ class JobGiverChatPage extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => ChatScreen(
-                            // name: c["name"],
-                            //avatar: c["avatar"],
-                          ),
-                        ),
+                        MaterialPageRoute(builder: (_) => ChatScreen()),
                       );
                     },
                     child: Padding(
@@ -256,49 +251,53 @@ class JobGiverChatPage extends StatelessWidget {
                     ),
                   );
                 },
-
-                // /// BOTTOM NAVIGATION WITH CENTER BUTTON
-                // bottomNavigationBar: Stack(
-                //   alignment: Alignment.center,
-                //   children: [
-                //     Container(
-                //       height: 80,
-                //       decoration:  BoxDecoration(
-                //           color: Colors.white,
-                //           borderRadius: BorderRadius.only(
-                //               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-                //           boxShadow: [
-                //             BoxShadow(
-                //                 color: Colors.black12, blurRadius: 10, offset: Offset(0, -2))
-                //           ]),
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //         children:  [
-                //           Icon(Icons.home_outlined, size: 28),
-                //           Icon(Icons.receipt_long_outlined, size: 28),
-                //           SizedBox(width: 60),
-                //           Icon(Icons.person_outline, size: 28),
-                //           Icon(Icons.settings_outlined, size: 28),
-                //         ],
-                //       ),
-                //     ),
-
-                //     /// Center button
-                //     Positioned(
-                //       bottom: 25,
-                //       child: Container(
-                //         height: 60,
-                //         width: 60,
-                //         decoration:  BoxDecoration(
-                //             color: Color(0xff0A2A5A), shape: BoxShape.circle),
-                //         child:  Icon(Icons.add, size: 32, color: Colors.white),
-                //       ),
-                //     )
-                //   ],
-                // ),
               ),
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: BottomNavigation(
+          currentIndex: 2,
+          onTabSelected: (index) async {
+            final prefs = await SharedPreferences.getInstance();
+            final userRole = prefs.getString("userRole") ?? "JOBSEEKER";
+        
+            if (userRole == "JobGiver") {
+              if (index == 0) {
+                return;
+              }
+        
+              if (index == 1) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => JobGiverAboutPage()),
+                );
+              }
+        
+              if (index == 2) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => JobGiverChatPage()),
+                );
+              }
+        
+              if (index == 3) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => RecruiterBioScreen()),
+                );
+              }
+              return;
+            }
+          },
+          onAddPressed: () {
+            // Navigate to Job Posting Screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => JobPostingScreen()),
+            );
+          },
         ),
       ),
     );

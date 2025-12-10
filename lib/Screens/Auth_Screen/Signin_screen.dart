@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:internshala/Widget/Buttons.dart';
-import 'package:internshala/Screens/Job_Giver_screen/HomeScreen.dart';
 import 'package:internshala/Screens/Auth_Screen/Auth_Service.dart';
 import 'package:internshala/Screens/Auth_Screen/Otp_Screen.dart';
 import 'package:internshala/Screens/Auth_Screen/Login_screen.dart';
@@ -294,13 +293,16 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ],
                       ),
-                      Button(
-                        color: Colors.blue,
-                        height: 50,
-                        width: 360,
-                        text: 'Send Otp',
-                        path: _register,
-                      ),
+
+                      _isLoading
+                          ? CircularProgressIndicator()
+                          : Button(
+                              color: Colors.blue,
+                              height: 50,
+                              width: 360,
+                              text: 'Send Otp',
+                              path: _register,
+                            ),
                     ],
                   ),
                 ),

@@ -9,6 +9,7 @@ class Cards extends StatelessWidget {
   final String site;
 
   const Cards({
+    super.key,
     // super.key,
     required this.image,
     required this.company,

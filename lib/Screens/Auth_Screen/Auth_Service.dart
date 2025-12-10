@@ -266,14 +266,52 @@ class AuthService {
       return {'success': false, 'message': 'An unexpected error occurred: $e'};
     }
   }
-  // Future <Map<String,dynamic>> ForgotPassword({required String email})async{
-  //   try{
-  //     var response =
 
-  //   }
-  //   catch(e){
+  Future<Map<String, dynamic>> logout({required String refreshToken}) async {
+    try {
+      print(' LOGOUT API CALLED');
+      print(' Trying URL: $baseUrl/logout');
+      print(' Request Body: ${jsonEncode({'refreshToken': refreshToken})}');
 
-  //   }
+      final response = await http.post(
+        Uri.parse('$baseUrl/logout'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'refreshToken': refreshToken}),
+      );
 
-  // }
+      print(' Response Status: ${response.statusCode}');
+      print(' Raw Response Body: "${response.body}"');
+
+      final body = response.body.trim();
+
+      if (body.isEmpty) {
+        print(' Empty response body received');
+        return {'success': false, 'message': 'Empty response from server'};
+      }
+
+      Map<String, dynamic> data;
+      try {
+        data = jsonDecode(body);
+        print(' Decoded JSON Response: $data');
+      } catch (e) {
+        print(' Response is not valid JSON, treating as plain text');
+        data = {'message': body};
+      }
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print(' Logout Successful');
+        return {'success': true, 'data': data};
+      } else {
+        print(' Logout failed with status ${response.statusCode}');
+        String errorMessage =
+            data['message'] ??
+            data['error'] ??
+            'Logout failed (${response.statusCode})';
+        return {'success': false, 'message': errorMessage};
+      }
+    } catch (e) {
+      print(' Exception during logout: $e');
+      return {'success': false, 'message': 'An unexpected error occurred: $e'};
+    }
+  }
 }

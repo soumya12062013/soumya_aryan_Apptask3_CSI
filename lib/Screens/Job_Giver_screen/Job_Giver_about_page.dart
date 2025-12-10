@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-//import 'package:internshala/Screens/network_screen.dart';
+import 'package:internshala/Widget/BottomNavBar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:internshala/Screens/Job_Giver_screen/Job_Giver_chat_page.dart';
+import 'package:internshala/Screens/Job_Giver_screen/Job_Giver_profile_page.dart';
+import 'package:internshala/Screens/Job_Giver_screen/Job_posting_screen.dart';
 
 class JobGiverAboutPage extends StatefulWidget {
   const JobGiverAboutPage({super.key});
@@ -9,8 +14,6 @@ class JobGiverAboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<JobGiverAboutPage> {
-  // final NetworkTab _currentTab = NetworkTab.suggestions;
-  int _bottomIndex = 2;
   final textStyleHeader = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
@@ -26,6 +29,49 @@ class _AboutPageState extends State<JobGiverAboutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: SafeArea(
+        child: BottomNavigation(
+          currentIndex: 1,
+          onTabSelected: (index) async {
+            final prefs = await SharedPreferences.getInstance();
+            final userRole = prefs.getString("userRole") ?? "JOBSEEKER";
+        
+            if (userRole == "JobGiver") {
+              if (index == 0) {
+                return;
+              }
+        
+              if (index == 1) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => JobGiverAboutPage()),
+                );
+              }
+        
+              if (index == 2) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => JobGiverChatPage()),
+                );
+              }
+        
+              if (index == 3) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => RecruiterBioScreen()),
+                );
+              }
+              return;
+            }
+          },
+          onAddPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => JobPostingScreen()),
+            );
+          },
+        ),
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -34,7 +80,7 @@ class _AboutPageState extends State<JobGiverAboutPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                'Assets/Images/logo.jpg', // replace with your asset
+                'Assets/Images/logo.jpg',
                 height: 50,
                 fit: BoxFit.contain,
               ),
@@ -114,39 +160,6 @@ class _AboutPageState extends State<JobGiverAboutPage> {
             ],
           ),
         ),
-      ),
-
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _bottomIndex,
-        onDestinationSelected: (i) => setState(() => _bottomIndex = i),
-        destinations: [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.search_outlined),
-            selectedIcon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          //  NavigationDestination(icon: Icon(Icons.people_alt_outlined), selectedIcon: Icon(Icons.people_alt_outlined), label: 'About'),
-          NavigationDestination(
-            icon: Icon(Icons.shopping_bag_outlined),
-            selectedIcon: Icon(Icons.shopping_bag),
-            label: 'Jobs',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.mail_outline),
-            selectedIcon: Icon(Icons.mail),
-            label: 'Messages',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }

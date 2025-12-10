@@ -1,49 +1,17 @@
-// import 'package:flutter/material.dart';
-// import 'package:internshala/Widget/BottomNavBar.dart';
-
-// final List<Widget> _pages = [
-//   const Center(child: Text('Home Page Content')),
-//   const Center(child: Text('Jobs Page Content')),
-//   const Center(child: Text('Chat Page Content')),
-//   const Center(child: Text('Profile Page Content')),
-// ];
-
-// class HomeScreen extends StatefulWidget {
-//   const HomeScreen({super.key});
-//   @override
-//   State<HomeScreen> createState() => _HomeScreenState();
-// }
-
-// class _HomeScreenState extends State<HomeScreen> {
-//   int _currentIndex = 0;
-//   void _onTabSelected(int index) {
-//     setState(() {
-//       _currentIndex = index;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('My App')),
-//       body: _pages[_currentIndex],
-//       bottomNavigationBar: BottomNavigation(
-//         currentIndex: _currentIndex,
-//         onTabSelected: _onTabSelected,
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
+import 'package:internshala/Screens/Job_Giver_screen/Job_Giver_about_page.dart';
+import 'package:internshala/Screens/Job_Giver_screen/Job_Giver_chat_page.dart';
+import 'package:internshala/Screens/Job_Giver_screen/Job_Giver_profile_page.dart';
+import 'package:internshala/Widget/BottomNavBar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:internshala/Screens/Job_Giver_screen/Job_posting_screen.dart';
 
-// User Model
 class User {
   final String name;
-  final String role; // 'seeker' or 'employer'
+  final String role;
   User({required this.name, required this.role});
 }
 
-// Job Model
 class Job {
   final String id;
   final String title;
@@ -72,7 +40,6 @@ class Job {
   });
 }
 
-// Post Model
 class Post {
   final String id;
   final String authorName;
@@ -102,8 +69,7 @@ class Post {
 }
 
 class HomeScreen extends StatefulWidget {
-  //final User currentUser;
-  //  const HomeScreen({super.key, required this.currentUser});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -199,7 +165,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final user = widget.currentUser;
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: SafeArea(
@@ -217,9 +182,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     'Welcome back,',
                     style: TextStyle(color: Colors.grey[600], fontSize: 14),
                   ),
-                  // Text(user.name,
-                  //     style: const TextStyle(
-                  //         color: Colors.black, fontWeight: FontWeight.bold)),
                 ],
               ),
               actions: [
@@ -244,13 +206,50 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-
-            // SliverToBoxAdapter(
-            //   child: user.role == 'seeker'
-            //       ? _buildSeekerView()
-            //       : _buildEmployerDashboard(),
-            // ),
           ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: BottomNavigation(
+          currentIndex: 0,
+          onTabSelected: (index) async {
+            final prefs = await SharedPreferences.getInstance();
+            final userRole = prefs.getString("userRole") ?? "JOBSEEKER";
+
+            if (userRole == "JobGiver") {
+              if (index == 0) {
+                return;
+              }
+
+              if (index == 1) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => JobGiverAboutPage()),
+                );
+              }
+
+              if (index == 2) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => JobGiverChatPage()),
+                );
+              }
+
+              if (index == 3) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => RecruiterBioScreen()),
+                );
+              }
+              return;
+            }
+          },
+          onAddPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => JobPostingScreen()),
+            );
+          },
         ),
       ),
     );
@@ -260,7 +259,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Recommended Jobs
         Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -274,11 +272,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        ...mockJobs.map((job) => _buildJobCard(job)).toList(),
+        ...mockJobs.map((job) => _buildJobCard(job)),
 
         const SizedBox(height: 24),
 
-        // Feed
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           color: Colors.white,
@@ -288,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
         ),
-        ...mockPosts.map((post) => _buildFeedPost(post)).toList(),
+        ...mockPosts.map((post) => _buildFeedPost(post)),
       ],
     );
   }
@@ -298,7 +295,6 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          // Stats Grid
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -315,7 +311,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 20),
 
-          // Recent Applications
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -421,13 +416,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () => toggleLikePost(post.id),
                 ),
                 Text('${post.likes}'),
-                const SizedBox(width: 16),
-                const Icon(Icons.comment_outlined, size: 20),
-                const SizedBox(width: 4),
+                SizedBox(width: 16),
+                Icon(Icons.comment_outlined, size: 20),
+                SizedBox(width: 4),
                 Text('${post.comments}'),
-                const SizedBox(width: 16),
-                const Icon(Icons.share_outlined, size: 20),
-                const SizedBox(width: 4),
+                SizedBox(width: 16),
+                Icon(Icons.share_outlined, size: 20),
+                SizedBox(width: 4),
                 Text('${post.shares}'),
               ],
             ),

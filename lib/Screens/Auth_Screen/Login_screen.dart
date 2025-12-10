@@ -1,7 +1,8 @@
+import 'package:internshala/Screens/Auth_Screen/Forget_screen.dart';
 import 'package:internshala/Widget/Buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:internshala/Screens/Auth_Screen/Auth_Service.dart';
-import 'package:internshala/Screens/Job_Giver_screen/HomeScreen.dart';
+import 'package:internshala/Screens/Job_Seeker_screen/HomeScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response['success']) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => Jobs()),
         );
       } else {
         final snackBar = SnackBar(content: Text(response['message']));
@@ -199,7 +200,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ForgetScreen(),
+                                ),
+                              );
+                            },
                             child: Text(
                               'Forgot Password?',
                               style: TextStyle(

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:internshala/Widget/Card.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:internshala/Widget/BottomNavBar.dart';
+import 'package:internshala/Widget/bottom_nav_seeker.dart';
+import 'package:internshala/Screens/Job_Seeker_screen/JobSeeker_Profile.dart';
+import 'package:internshala/Screens/Job_Seeker_screen/Job_Seeker_Chat_page.dart';
+import 'package:internshala/Screens/Job_Seeker_screen/job_list_page.dart';
 
-class Job extends StatefulWidget {
-  const Job({super.key});
+class Jobs extends StatefulWidget {
+  const Jobs({super.key});
 
   @override
-  State<Job> createState() => _JobState();
+  State<Jobs> createState() => _JobsState();
 }
 
-class _JobState extends State<Job> {
+class _JobsState extends State<Jobs> {
   int currentIndex = 1;
 
   @override
@@ -18,14 +21,37 @@ class _JobState extends State<Job> {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: currentIndex,
-        onTabSelected: (index) {
-          setState(() => currentIndex = index);
-
-          // OPTIONAL: Add navigation later
-          // if (index == 0) Navigator.push(...);
-        },
+      bottomNavigationBar: SafeArea(
+        child: JobSeekerBottomNavigation(
+          currentIndex: 0,
+          onTabSelected: (index) async {
+            if (index == 0) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const Jobs()),
+                (route) => false,
+              );
+            } else if (index == 1) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const JobListPage()),
+                (route) => false,
+              );
+            } else if (index == 2) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => MessagesScreen()),
+                (route) => false,
+              );
+            } else if (index == 3) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const SeekerBioScreen()),
+                (route) => false,
+              );
+            }
+          },
+        ),
       ),
 
       body: SafeArea(
@@ -184,7 +210,7 @@ class _JobState extends State<Job> {
         ),
       ),
       drawer: Drawer(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 180, 194, 206),
         child: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),

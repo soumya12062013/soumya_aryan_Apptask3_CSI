@@ -1,23 +1,23 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:internshala/Screens/Job_Seeker_screen/Submit_Notification_page.dart';
+import 'package:internshala/Widget/bottom_nav_seeker.dart';
+import 'package:internshala/Screens/Job_Seeker_screen/job_list_page.dart';
+import 'package:internshala/Screens/Job_Seeker_screen/Job_Seeker_Chat_page.dart';
+import 'package:internshala/Screens/Job_Seeker_screen/HomeScreen.dart';
+import 'dart:io';
 import 'package:intl/intl.dart';
-import 'package:internshala/Widget/BottomNavBar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:internshala/Screens/Job_Giver_screen/Job_Giver_about_page.dart';
-import 'package:internshala/Screens/Job_Giver_screen/Job_Giver_chat_page.dart';
-import 'package:internshala/Screens/Auth_Screen/Login_screen.dart';
-import 'package:internshala/Screens/Auth_Screen/Auth_Service.dart';
-import 'package:internshala/Screens/Job_Giver_screen/Job_posting_screen.dart';
+import 'package:img_picker/img_picker.dart';
 
-class RecruiterBioScreen extends StatefulWidget {
-  const RecruiterBioScreen({super.key});
+class SeekerBioScreen extends StatefulWidget {
+  const SeekerBioScreen({super.key});
+
   @override
-  State<RecruiterBioScreen> createState() => _RecruiterBioScreenState();
+  State<SeekerBioScreen> createState() => _SeekerBioScreenState();
 }
 
-class _RecruiterBioScreenState extends State<RecruiterBioScreen> {
-  final _AuthService = AuthService();
+class _SeekerBioScreenState extends State<SeekerBioScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final _fullNameCtl = TextEditingController();
   final _jobTitleCtl = TextEditingController();
   final _companyNameCtl = TextEditingController();
@@ -27,40 +27,19 @@ class _RecruiterBioScreenState extends State<RecruiterBioScreen> {
   final _linkedinCtl = TextEditingController();
   final _specializationsCtl = TextEditingController();
   final _aboutCompanyCtl = TextEditingController();
+
   bool _agreePrivacy = false;
   bool _visibleProfile = false;
+
   File? _pickedImage;
-  Future<void> _logout() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final refreshToken = prefs.getString("refreshToken");
 
-      if (refreshToken != null) {
-        final response = await _AuthService.logout(refreshToken: refreshToken);
-
-        print("Logout API Response: $response");
-      } else {
-        print("No refresh token found, skipping API logout.");
-      }
-
-      await prefs.clear();
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => LoginScreen()),
-        (route) => false,
-      );
-    } catch (e) {
-      print("Logout Error: $e");
-
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.clear();
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => LoginScreen()),
-        (route) => false,
-      );
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final XFile? file = await picker.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        _pickedImage = File(file.path);
+      });
     }
   }
 
@@ -155,26 +134,32 @@ class _RecruiterBioScreenState extends State<RecruiterBioScreen> {
           onPressed: () {
             // Navigator.push(
             //   context,
-            //  // MaterialPageRoute(builder: (context) => RoleSelectionPage()),
+            //   MaterialPageRoute(builder: (context) => RoleSelectionPage()),
             // );
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: Icon(Icons.account_circle_outlined),
             style: IconButton.styleFrom(foregroundColor: Colors.white),
-            onPressed: _logout,
+            onPressed: () {
+              // Navigator.push(
+              //   context,
+              // MaterialPageRoute(builder: (context) => RoleSelectionPage()),
+              // );
+            },
           ),
         ],
-
         elevation: 0,
       ),
+
       body: SafeArea(
         child: Form(
           key: _formKey,
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             children: [
+              // upload box (top)
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -182,7 +167,9 @@ class _RecruiterBioScreenState extends State<RecruiterBioScreen> {
                 elevation: 2,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(12),
-
+                  onTap: () {
+                    _pickImage();
+                  },
                   child: Container(
                     height: 120,
                     padding: EdgeInsets.all(12),
@@ -261,6 +248,8 @@ class _RecruiterBioScreenState extends State<RecruiterBioScreen> {
                       requiredField: true,
                     ),
                   ),
+
+                  //  SizedBox(width: 20),
                 ],
               ),
               SizedBox(height: 12),
@@ -273,6 +262,8 @@ class _RecruiterBioScreenState extends State<RecruiterBioScreen> {
                       requiredField: true,
                     ),
                   ),
+
+                  // SizedBox(width: 20),
                 ],
               ),
 
@@ -290,9 +281,18 @@ class _RecruiterBioScreenState extends State<RecruiterBioScreen> {
                 ],
               ),
 
-              Text('Company Name + Logo *'),
+              Text(
+                'Company Name + Logo *',
+                //  style: Theme.of(context).textTheme,
+              ),
               SizedBox(height: 8),
               InkWell(
+                onTap: () {
+                  _pickedImage == null ? _pickImage() : null;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Pick company logo (not wired)')),
+                  );
+                },
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   decoration: BoxDecoration(
@@ -309,7 +309,10 @@ class _RecruiterBioScreenState extends State<RecruiterBioScreen> {
                       Expanded(child: Text('company-logo.png')),
                       IconButton(
                         icon: Icon(Icons.upload_file),
-                        onPressed: () {},
+                        onPressed: () {
+                          // same pick action
+                          _pickedImage;
+                        },
                       ),
                     ],
                   ),
@@ -389,6 +392,12 @@ class _RecruiterBioScreenState extends State<RecruiterBioScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     _submit();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ApplicationSubmittedScreen(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF10213A),
@@ -413,46 +422,28 @@ class _RecruiterBioScreenState extends State<RecruiterBioScreen> {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        child: BottomNavigation(
+        child: JobSeekerBottomNavigation(
           currentIndex: 3,
-          onTabSelected: (index) async {
-            final prefs = await SharedPreferences.getInstance();
-            final userRole = prefs.getString("userRole") ?? "JOBSEEKER";
-        
-            if (userRole == "JobGiver") {
-              if (index == 0) {
-                return;
-              }
-        
-              if (index == 1) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => JobGiverAboutPage()),
-                );
-              }
-        
-              if (index == 2) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => JobGiverChatPage()),
-                );
-              }
-        
-              if (index == 3) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => RecruiterBioScreen()),
-                );
-              }
-              return;
-            }
-          },
-          onAddPressed: () {
-            // Navigate to Job Posting Screen
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => JobPostingScreen()),
-            );
+          onTabSelected: (index) {
+            if (index == 0) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const Jobs()),
+                (route) => false,
+              );
+            } else if (index == 1) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const JobListPage()),
+                (route) => false,
+              );
+            } else if (index == 2) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => MessagesScreen()),
+                (route) => false,
+              );
+            } else if (index == 3) {}
           },
         ),
       ),
